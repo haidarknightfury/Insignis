@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: insignis-product
+  data:    mongodb:      database: insignis-db
+      port: 27017
+      uri: mongodb://localhost
+server:  port: 8086

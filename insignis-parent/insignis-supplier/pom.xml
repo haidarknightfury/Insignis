@@ -19,6 +19,7 @@
 			<groupId>com.insignis</groupId>
 			<artifactId>insignis-shared</artifactId>
 		</dependency>
+		
 	</dependencies>
 
 

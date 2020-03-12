@@ -1,11 +1,9 @@
 package com.insignis.supplier.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.ApplicationArguments;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -37,13 +35,6 @@ public class SupplierController {
 		return createdSupplier;
 	}
 	
-	@ResponseStatus(HttpStatus.OK)
-	@RequestMapping(value = "/findAll", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public List<Supplier> findAll(){
-		List<Supplier> suppliers = supplierService.findAll();
-		return suppliers;
-	}
-	
 	
 	@ResponseStatus(HttpStatus.OK)
 	@RequestMapping(method = RequestMethod.DELETE, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -52,5 +43,20 @@ public class SupplierController {
 			return supplierService.delete(supplier);
 	}
 	
+	
+	@ResponseStatus(HttpStatus.OK)
+	@RequestMapping(method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public Supplier update(@RequestBody Supplier supplier) {
+		Objects.requireNonNull(supplier.getId(),"Supplier ID cannot be null");
+		return supplierService.save(supplier);
+	}
+	
+	
+	@ResponseStatus(HttpStatus.OK)
+	@RequestMapping(value = "/findAll", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public List<Supplier> findAll(){
+		List<Supplier> suppliers = supplierService.findAll();
+		return suppliers;
+	}
 }
 

@@ -44,5 +44,19 @@ public class SupplierService {
 	}
 	
 	
+	public Supplier update(Supplier supplier) throws NotFoundException {
+		Optional<Supplier> mongoSupplier = supplierRepository.findById(supplier.getId());
+		try {
+			Supplier sup = mongoSupplier.get();
+			sup.setAddress(supplier.getAddress());
+			sup.setContacts(supplier.getContacts());
+			sup.setName(supplier.getName());
+			return supplierRepository.save(sup);
+		}
+		catch (Exception exception) {
+			throw new NotFoundException("Supplier could not be found");
+		}
+	}
+	
 
 }
