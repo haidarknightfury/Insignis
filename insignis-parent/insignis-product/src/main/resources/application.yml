@@ -4,4 +4,9 @@ spring:
   data:    mongodb:      database: insignis-db
       port: 27017
       uri: mongodb://localhost
+      auto-index-creation: false
 server:  port: 8086
+application:
+  service:
+    supplier: http://localhost:8085/supplier
+    

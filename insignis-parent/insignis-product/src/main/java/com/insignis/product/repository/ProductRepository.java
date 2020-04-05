@@ -8,4 +8,8 @@ import com.insignis.product.domain.Product;
 @Repository
 public interface ProductRepository extends MongoRepository<Product, String> {
 
+	public Product findByName(String name);
+
+	public Product findByProductId(String productId);
+
 }
