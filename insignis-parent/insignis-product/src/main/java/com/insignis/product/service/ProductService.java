@@ -38,23 +38,41 @@ public class ProductService implements SupplierResource {
 
 	public List<ProductDTO> getProducts() {
 		List<ProductDTO> products = this.productRepository.findAll().stream().map(MapperUtils.ProductDTOMapper()).collect(Collectors.toList());
+		products.stream().forEach(product -> {
+			SupplierDTO supplierDto = getSupplierById(product.getSupplier().getId()).orElse(null);
+			product.setSupplier(supplierDto);
+		});
 		return products;
 	}
 
-	public Product createProduct(Product product) throws NotFoundException {
+	public Product save(Product product) throws NotFoundException {
 		SupplierDTO supplierDTO = getSupplierById(product.getSupplierId()).orElseThrow(() -> new NotFoundException(product.getSupplierId() + " could not be found"));
 		return this.productRepository.save(product);
 	}
 
 	public Optional<SupplierDTO> getSupplierById(String suplierId) {
-		ResponseEntity<SupplierDTO> response = restTemplate.getForEntity(SUPPLIER_URL + SupplierResource.FIND_BY_ID, SupplierDTO.class);
-		return Optional.ofNullable(response.getBody());
+		if (suplierId != null) {
+			ResponseEntity<SupplierDTO> response = restTemplate.getForEntity(SUPPLIER_URL + SupplierResource.FIND_BY_ID + "?id=" + suplierId, SupplierDTO.class);
+			return Optional.ofNullable(response.getBody());
+		}
+		return Optional.empty();
 	}
 
 	public List<SupplierDTO> getSuppliers() {
 		ResponseEntity<SupplierDTO[]> response = restTemplate.getForEntity(SUPPLIER_URL + SupplierResource.FIND_ALL, SupplierDTO[].class);
 		SupplierDTO[] suppliers = response.getBody();
 		return Arrays.stream(suppliers).collect(Collectors.toList());
+	}
+
+	public ProductDTO findByProductName(String name) {
+		Optional<Product> optProduct = this.productRepository.findByNameIgnoreCase(name);
+		ProductDTO productDTO = null;
+		if (optProduct.isPresent()) {
+			Product product = optProduct.get();
+			productDTO = MapperUtils.ProductDTOMapper().apply(product);
+			productDTO.setSupplier(getSupplierById(product.getSupplierId()).orElse(null));
+		}
+		return productDTO;
 	}
 
 }

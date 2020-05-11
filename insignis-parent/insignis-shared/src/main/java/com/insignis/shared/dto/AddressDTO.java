@@ -7,9 +7,8 @@ public class AddressDTO {
 	private String country;
 	private Integer postalCode;
 
-	public AddressDTO(String id, String street, String region, String country, Integer postalCode) {
+	public AddressDTO(String street, String region, String country, Integer postalCode) {
 		super();
-		this.id = id;
 		this.street = street;
 		this.region = region;
 		this.country = country;
@@ -61,8 +60,7 @@ public class AddressDTO {
 
 	@Override
 	public String toString() {
-		return "AddressDTO [id=" + id + ", street=" + street + ", region=" + region + ", country=" + country
-				+ ", postalCode=" + postalCode + "]";
+		return "AddressDTO [id=" + id + ", street=" + street + ", region=" + region + ", country=" + country + ", postalCode=" + postalCode + "]";
 	}
 
 }

@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: insignis-client
+  data:
+    mongodb:
+      database: insignis-db
+      port: 27017
+      uri: mongodb://localhost
+server:
+  port: 8090

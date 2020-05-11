@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: insignis-payment
+  data:
+    mongodb:
+      database: insignis-db
+      port: 27017
+      uri: mongodb://localhost
+      auto-index-creation: false
+server:
+  port: 8087
+  
+STRIPE_PUBLIC_KEY: pk_test_IoPJIlc1LlyMY8SVUE9afVBD00U0T4MnYB
+STRIPE_SECRET_KEY: sk_test_6Q5l9nv6uHQpurz3JWX4LR7z00JtgtwYDw
