@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.insignis.cart.mapper.MapperUtils;
 import com.insignis.cart.model.Cart;
 import com.insignis.cart.service.CartService;
+import com.insignis.cart.service.UpdateCartEntryProcessor;
 import com.insignis.shared.dto.CartDTO;
 
 @RestController
@@ -42,6 +43,14 @@ public class CartController {
 		cartDto.setId(UUID.randomUUID().toString());
 		cartService.addCart(MapperUtils.toCart.apply(cartDto));
 		return cartDto;
+	}
+
+	@ResponseStatus(HttpStatus.CREATED)
+	@RequestMapping(method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public CartDTO updateCart(@RequestBody CartDTO cartDto) {
+		Cart cart = MapperUtils.toCart.apply(cartDto);
+		Cart updated = cartService.updateCart(cartDto.getId(), new UpdateCartEntryProcessor(cart.getProducts()));
+		return MapperUtils.toCartDTO.apply(updated);
 	}
 
 }
