@@ -1,0 +1,40 @@
+MATCH (start:Location {name: 'A1'}), (end:Location {name: 'B5'})
+CALL gds.alpha.shortestPath.stream({
+  nodeProjection: 'Location',
+  relationshipProjection: {
+    NEXT_TO: {
+      type: 'NEXT_TO',
+      properties: 'distance',
+      orientation: 'UNDIRECTED'
+    }
+  },
+  startNode: start,
+  endNode: end,
+  relationshipWeightProperty: 'distance'
+})
+YIELD nodeId, cost
+RETURN gds.util.asNode(nodeId).name AS name, cost
+
+
+
+
+MATCH (start:Location {name: 'A1'}), (end:Location {name: 'B5'})
+CALL gds.alpha.shortestPath.write({
+  nodeProjection: 'Location',
+  relationshipProjection: {
+    NEXT_TO: {
+      type: 'NEXT_TO',
+      properties: 'distance',
+      orientation: 'UNDIRECTED'
+    }
+  },
+  startNode: start,
+  endNode: end,
+  relationshipWeightProperty: 'distance',
+  writeProperty: 'sssp'
+})
+YIELD nodeCount, totalCost
+RETURN nodeCount,totalCost
+
+
+CALL gds.graph.create.cypher('my-graph','MATCH (n:Location) RETURN id(n) as id', 'MATCH (n:Location)-[r:NEXT_TO]->(m:Location) RETURN id(n) AS source, id(m) AS target, r.distance AS distance' )(n:Location) RETURN id(n) as id, n.name as name', 'MATCH(n:Location)-[r:NEXT_TO]->(m:Location) RETURN id(n) AS source, id(m) AS target, r.distance AS distance' )

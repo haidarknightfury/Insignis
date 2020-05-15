@@ -32,6 +32,7 @@
 		<module>insignis-supplier</module>
 		<module>insignis-product</module>
 		<module>insignis-api-gateway</module>
+		<module>insignis-location</module>
 	</modules>
 
 	<dependencies>
