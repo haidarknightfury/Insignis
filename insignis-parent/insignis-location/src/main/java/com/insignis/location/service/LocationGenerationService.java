@@ -1,10 +1,15 @@
 package com.insignis.location.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.neo4j.ogm.session.Session;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
@@ -14,7 +19,9 @@ import com.insignis.location.model.Location;
 import com.insignis.location.repository.LocationRepository;
 
 @Component
-public class LocationCommandLineRunner implements CommandLineRunner {
+public class LocationGenerationService implements CommandLineRunner {
+
+	private static final Logger logger = LoggerFactory.getLogger(LocationGenerationService.class);
 
 	@Autowired
 	private LocationRepository locationRepository;
@@ -23,12 +30,26 @@ public class LocationCommandLineRunner implements CommandLineRunner {
 	private static final Integer LIMIT_ROW = 5;
 	private static final char START = "A".charAt(0);
 
+	@Value("${application.location.generation}")
+	private boolean generateLocations;
+
+	@Autowired
+	private Session neo4jSession;
+
 	@Override
 	public void run(String... args) throws Exception {
-		// List<Location> locations = (List<Location>) locationRepository.findAll();
-		// System.out.println(locations);
-		locationRepository.deleteAll();
-		createNeo4jLocations();
+		logger.warn("generate neo4j locations {}", generateLocations);
+		if (generateLocations) {
+			locationRepository.deleteAll();
+			createNeo4jLocations();
+		}
+
+		List<HashMap<String, Long>> res = locationRepository.findShortestPath("A1", "B6");
+		System.out.println(res);
+
+		List<HashMap<Long, Long>> map = locationRepository.findNodeCount("B1", "D5");
+		System.out.println(map);
+
 	}
 
 	public void createNeo4jLocations() {

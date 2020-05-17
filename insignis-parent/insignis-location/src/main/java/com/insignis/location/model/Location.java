@@ -1,5 +1,6 @@
 package com.insignis.location.model;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -9,7 +10,9 @@ import org.neo4j.ogm.annotation.NodeEntity;
 import org.neo4j.ogm.annotation.Relationship;
 
 @NodeEntity
-public class Location {
+public class Location implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue
@@ -22,6 +25,9 @@ public class Location {
 
 	@Relationship(type = "NEXT_TO", direction = Relationship.UNDIRECTED)
 	private Set<Link> links = new HashSet<Link>();
+
+	@Relationship(type = "CONTAINS", direction = Relationship.OUTGOING)
+	private Set<Product> products = new HashSet<Product>();
 
 	public Location() {
 	}
@@ -69,6 +75,14 @@ public class Location {
 	@Override
 	public String toString() {
 		return "Location [id=" + id + ", name=" + name + ", x=" + x + ", y=" + y + ", category=" + category + ", links=" + links + "]";
+	}
+
+	public Set<Product> getProducts() {
+		return products;
+	}
+
+	public void setProducts(Set<Product> products) {
+		this.products = products;
 	}
 
 }

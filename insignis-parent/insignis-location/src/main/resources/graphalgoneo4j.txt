@@ -17,6 +17,25 @@ RETURN gds.util.asNode(nodeId).name AS name, cost
 
 
 
+MATCH (start:Location {name: $start}), (end:Location {name: $end})
+CALL gds.alpha.shortestPath.stream({
+  nodeProjection: 'Location',
+  relationshipProjection: {
+    NEXT_TO: {
+      type: 'NEXT_TO',
+      properties: 'distance',
+      orientation: 'UNDIRECTED'
+    }
+  },
+  startNode: start,
+  endNode: end,
+  relationshipWeightProperty: 'distance'
+})
+YIELD nodeId, cost
+RETURN gds.util.asNode(nodeId).name AS name, cost
+
+
+
 
 MATCH (start:Location {name: 'A1'}), (end:Location {name: 'B5'})
 CALL gds.alpha.shortestPath.write({
