@@ -25,4 +25,9 @@ public interface LocationRepository extends Neo4jRepository<Location, Long> {
 			+ "YIELD nodeCount, totalCost\r\n" + "RETURN nodeCount,totalCost")
 	List<HashMap<Long, Long>> findNodeCount(@Param("start") String start, @Param("end") String end);
 
+	@Query("MATCH (start:Location {name: 'A1'}), (end:Location {name: 'B5'})\r\n" + "CALL gds.alpha.shortestPath.stream({\r\n" + "  nodeProjection: 'Location',\r\n" + "  relationshipProjection: {\r\n"
+			+ "    NEXT_TO: {\r\n" + "      type: 'NEXT_TO',\r\n" + "      properties: 'distance',\r\n" + "      orientation: 'UNDIRECTED'\r\n" + "    }\r\n" + "  },\r\n" + "  startNode: start,\r\n"
+			+ "  endNode: end,\r\n" + "  relationshipWeightProperty: 'distance'\r\n" + "})\r\n" + "YIELD nodeId\r\n" + "RETURN gds.util.asNode(nodeId)")
+	List<Location> findShortestPathLocations(@Param("start") String start, @Param("end") String end);
+
 }

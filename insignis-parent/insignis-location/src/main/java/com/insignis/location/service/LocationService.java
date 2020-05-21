@@ -33,4 +33,8 @@ public class LocationService {
 		locationRepository.save(location);
 		return locationRepository.findByName(locationName).get(0).getProducts().stream().filter(prod -> prod.getProductName() == product.getProductName()).findAny().get();
 	}
+
+	public List<Location> findShortestPath(String start, String end) {
+		return locationRepository.findShortestPathLocations(start, end);
+	}
 }
