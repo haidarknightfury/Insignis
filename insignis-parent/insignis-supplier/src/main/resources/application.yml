@@ -1,7 +1,3 @@
 spring:
   application:
     name: insignis-supplier
-  data:    mongodb:      database: insignis-db
-      port: 27017
-      uri: mongodb://localhost
-server:  port: 8085

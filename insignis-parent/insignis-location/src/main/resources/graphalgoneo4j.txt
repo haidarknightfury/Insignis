@@ -57,3 +57,18 @@ RETURN nodeCount,totalCost
 
 
 CALL gds.graph.create.cypher('my-graph','MATCH (n:Location) RETURN id(n) as id', 'MATCH (n:Location)-[r:NEXT_TO]->(m:Location) RETURN id(n) AS source, id(m) AS target, r.distance AS distance' )(n:Location) RETURN id(n) as id, n.name as name', 'MATCH(n:Location)-[r:NEXT_TO]->(m:Location) RETURN id(n) AS source, id(m) AS target, r.distance AS distance' )
+
+
+
+
+## Simple queries
+match (l:Location) -[:CONTAINS]- (p:Product) return p
+match(p:Product) return p
+match (l:Location{name:'A1'}) -[:CONTAINS]- (p:Product) return p
+match (p:Product{productName:'Kit Kat'}) -[:CONTAINS]- (l:Location) return l
+match (p:Product{productName:'Kit Kat'}) <-[:CONTAINS]- (l:Location) return l
+
+
+
+
+
