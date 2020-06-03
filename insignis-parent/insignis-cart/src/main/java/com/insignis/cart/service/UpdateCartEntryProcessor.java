@@ -25,7 +25,7 @@ public class UpdateCartEntryProcessor implements Serializable, EntryProcessor<St
 	public Object process(Entry<String, Cart> entry) {
 		Cart cart = entry.getValue();
 		cart.setProducts(this.products);
-		Optional<BigDecimal> total = this.products.stream().map(Product::getUnitPrice).reduce((t, u) -> t.add(u));
+		Optional<BigDecimal> total = this.products.stream().map(product -> product.getUnitPrice().multiply(BigDecimal.valueOf(product.getQuantity()))).reduce((t, u) -> t.add(u));
 		cart.setTotal(total.orElse(BigDecimal.ZERO));
 		return cart;
 	}

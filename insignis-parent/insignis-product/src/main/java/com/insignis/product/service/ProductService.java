@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,6 +21,7 @@ import com.insignis.shared.dto.SupplierDTO;
 import com.insignis.shared.exception.NotFoundException;
 import com.insignis.shared.operations.SupplierResource;
 
+@RefreshScope
 @Service
 @Transactional
 public class ProductService implements SupplierResource {

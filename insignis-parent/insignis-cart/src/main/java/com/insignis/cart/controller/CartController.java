@@ -1,5 +1,6 @@
 package com.insignis.cart.controller;
 
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -23,6 +24,7 @@ import com.insignis.shared.dto.CartDTO;
 @RequestMapping(value = "/cart")
 public class CartController {
 
+	private static final String DEFAULT_OUTLET = "DEFAULT";
 	private final CartService cartService;
 
 	@Autowired
@@ -40,9 +42,11 @@ public class CartController {
 	@ResponseStatus(HttpStatus.CREATED)
 	@RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public CartDTO createCart(@RequestBody CartDTO cartDto) {
-		cartDto.setId(UUID.randomUUID().toString());
+		cartDto.setId(cartDto.getId() != null ? cartDto.getId() : UUID.randomUUID().toString());
+		cartDto.setDate(new Date());
+		cartDto.setOutlet(cartDto.getOutlet() != null ? cartDto.getOutlet() : DEFAULT_OUTLET);
 		cartService.addCart(MapperUtils.toCart.apply(cartDto));
-		return cartDto;
+		return MapperUtils.toCartDTO.apply(cartService.getCart(cartDto.getId()));
 	}
 
 	@ResponseStatus(HttpStatus.CREATED)

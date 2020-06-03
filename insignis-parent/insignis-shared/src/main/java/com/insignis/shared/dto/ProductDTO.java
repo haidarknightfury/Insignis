@@ -10,10 +10,11 @@ public class ProductDTO implements Serializable {
 	private String productId;
 	private String name;
 	private Float unitPrice;
+	private Integer quantity;
 	private List<CategoryDTO> categories;
 	private SupplierDTO supplier;
 
-	public ProductDTO(String id, String productId, String name, Float unitPrice, List<CategoryDTO> categories, SupplierDTO supplier) {
+	public ProductDTO(String id, String productId, String name, Float unitPrice, List<CategoryDTO> categories, SupplierDTO supplier, Integer quantity) {
 		super();
 		this.id = id;
 		this.productId = productId;
@@ -21,6 +22,7 @@ public class ProductDTO implements Serializable {
 		this.unitPrice = unitPrice;
 		this.categories = categories;
 		this.supplier = supplier;
+		this.quantity = quantity;
 	}
 
 	public ProductDTO() {
@@ -29,7 +31,8 @@ public class ProductDTO implements Serializable {
 
 	@Override
 	public String toString() {
-		return "ProductDTO [id=" + id + ", productId=" + productId + ", name=" + name + ", unitPrice=" + unitPrice + ", categories=" + categories + ", supplier=" + supplier + "]";
+		return "ProductDTO [id=" + id + ", productId=" + productId + ", name=" + name + ", unitPrice=" + unitPrice + ", quantity=" + quantity + ", categories=" + categories + ", supplier=" + supplier
+				+ "]";
 	}
 
 	public String getId() {
@@ -78,6 +81,14 @@ public class ProductDTO implements Serializable {
 
 	public void setSupplier(SupplierDTO supplier) {
 		this.supplier = supplier;
+	}
+
+	public Integer getQuantity() {
+		return quantity;
+	}
+
+	public void setQuantity(Integer quantity) {
+		this.quantity = quantity;
 	}
 
 }
