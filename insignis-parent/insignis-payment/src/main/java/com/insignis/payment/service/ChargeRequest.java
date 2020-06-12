@@ -3,7 +3,7 @@ package com.insignis.payment.service;
 public class ChargeRequest {
 
 	public enum Currency {
-		EUR, USD;
+		EUR, USD, MUR;
 	}
 
 	private String description;
