@@ -17,8 +17,12 @@ public class MapperUtils {
 		ProductDTO productDTO = new ProductDTO();
 		productDTO.setId(product.getId());
 		productDTO.setName(product.getName());
-		productDTO.setUnitPrice(product.getUnitPrice().floatValue());
+		productDTO.setUnitPrice(product.getUnitPrice() != null ? product.getUnitPrice().floatValue() : null);
 		productDTO.setQuantity(product.getQuantity());
+		productDTO.setDescription(product.getDescription());
+		productDTO.setProductId(product.getProductCode());
+		productDTO.setBuyingPrice(product.getBuyingPrice() != null ? product.getBuyingPrice().floatValue() : null);
+		productDTO.setDiscount(product.getDiscount());
 		return productDTO;
 	};
 
@@ -29,7 +33,8 @@ public class MapperUtils {
 	};
 
 	private static Function<ProductDTO, Product> toProduct = productDto -> {
-		Product product = new Product(productDto.getId(), productDto.getName(), null, new BigDecimal(productDto.getUnitPrice()), productDto.getQuantity());
+		Product product = new Product(productDto.getId(), productDto.getName(), productDto.getDescription(), new BigDecimal(productDto.getUnitPrice()), productDto.getQuantity(),
+				productDto.getProductId(), BigDecimal.valueOf(productDto.getBuyingPrice()), productDto.getDiscount());
 		return product;
 	};
 

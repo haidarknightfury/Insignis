@@ -8,7 +8,6 @@ import com.insignis.client.model.Client;
 
 public interface ClientRepository extends MongoRepository<Client, String> {
 
-	Optional<Client> findByNameIgnoreCase(String name);
+	Optional<Client> findByLastNameOrFirstNameIgnoreCase(String name);
 
-	Optional<Client> findByUsername(String username);
 }

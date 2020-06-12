@@ -7,18 +7,24 @@ public class Product implements Serializable {
 
 	private static final long serialVersionUID = -6076574954821695100L;
 	private String id;
+	private String productCode;
 	private String name;
 	private String description;
 	private BigDecimal unitPrice;
+	private BigDecimal buyingPrice;
+	private Float discount;
 	private Integer quantity;
 
-	public Product(String id, String name, String description, BigDecimal unitPrice, Integer quantity) {
+	public Product(String id, String name, String description, BigDecimal unitPrice, Integer quantity, String productCode, BigDecimal buyingPrice, Float discount) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.description = description;
 		this.unitPrice = unitPrice;
 		this.quantity = quantity;
+		this.productCode = productCode;
+		this.buyingPrice = buyingPrice;
+		this.discount = discount;
 	}
 
 	public Product() {
@@ -63,6 +69,30 @@ public class Product implements Serializable {
 
 	public void setQuantity(Integer quantity) {
 		this.quantity = quantity;
+	}
+
+	public String getProductCode() {
+		return productCode;
+	}
+
+	public void setProductCode(String productCode) {
+		this.productCode = productCode;
+	}
+
+	public BigDecimal getBuyingPrice() {
+		return buyingPrice;
+	}
+
+	public void setBuyingPrice(BigDecimal buyingPrice) {
+		this.buyingPrice = buyingPrice;
+	}
+
+	public Float getDiscount() {
+		return discount;
+	}
+
+	public void setDiscount(Float discount) {
+		this.discount = discount;
 	}
 
 }

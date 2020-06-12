@@ -17,6 +17,7 @@ import com.insignis.product.domain.Product;
 import com.insignis.product.mapper.MapperUtils;
 import com.insignis.product.service.ProductService;
 import com.insignis.shared.dto.ProductDTO;
+import com.insignis.shared.exception.InvalidParameterException;
 import com.insignis.shared.exception.NotFoundException;
 import com.insignis.shared.operations.ProductResource;
 
@@ -47,6 +48,14 @@ public class ProductController implements ProductResource {
 	}
 
 	@ResponseStatus(HttpStatus.OK)
+	@RequestMapping(method = RequestMethod.DELETE, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ProductDTO delete(@RequestBody ProductDTO productDTO) throws NotFoundException {
+		Objects.requireNonNull(productDTO.getId(), "Product ID cannot be null");
+		productService.deleteProduct(productDTO.getId());
+		return productDTO;
+	}
+
+	@ResponseStatus(HttpStatus.OK)
 	@RequestMapping(value = FIND_ALL, method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public List<ProductDTO> findAll() {
 		List<ProductDTO> products = productService.getProducts();
@@ -58,6 +67,22 @@ public class ProductController implements ProductResource {
 	public ResponseEntity<ProductDTO> findByName(@RequestParam String name) {
 		ResponseEntity<ProductDTO> response = ResponseEntity.ok(productService.findByProductName(name));
 		return response;
+	}
+
+	@ResponseStatus(HttpStatus.OK)
+	@RequestMapping(value = FIND_BY_ID, method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<ProductDTO> findById(@RequestParam String id) {
+		ResponseEntity<ProductDTO> response = ResponseEntity.ok(MapperUtils.ProductDTOMapper().apply(productService.findProductById(id)));
+		return response;
+	}
+
+	@ResponseStatus(HttpStatus.OK)
+	@RequestMapping(value = UPDATE_STOCK, method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<ProductDTO> updateStock(@RequestBody ProductDTO productDTO) throws InvalidParameterException, NotFoundException {
+		Objects.requireNonNull(productDTO.getId(), "Product ID must not be null");
+		Objects.requireNonNull(productDTO.getQuantity(), "Quantity bought should be available");
+		Product product = productService.updateStock(productDTO.getId(), productDTO.getQuantity());
+		return ResponseEntity.ok(MapperUtils.ProductDTOMapper().apply(product));
 	}
 
 }

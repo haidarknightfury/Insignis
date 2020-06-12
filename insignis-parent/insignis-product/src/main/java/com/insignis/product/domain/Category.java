@@ -10,12 +10,12 @@ public class Category {
 	@Id
 	private String id;
 	@Indexed
-	private CategoryTypeEnum category;
+	private String category;
 
 	public Category() {
 	}
 
-	public Category(CategoryTypeEnum category) {
+	public Category(String category) {
 		this.category = category;
 	}
 
@@ -27,11 +27,11 @@ public class Category {
 		this.id = id;
 	}
 
-	public CategoryTypeEnum getCategory() {
+	public String getCategory() {
 		return category;
 	}
 
-	public void setCategory(CategoryTypeEnum category) {
+	public void setCategory(String category) {
 		this.category = category;
 	}
 

@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 
 import com.insignis.client.model.Client;
 import com.insignis.client.repository.ClientRepository;
@@ -34,9 +35,10 @@ public class ClientService {
 			Client cli = mongoClient.get();
 			cli.setAddress(client.getAddress());
 			cli.setContacts(client.getContacts());
-			cli.setName(client.getName());
-			cli.setUsername(client.getUsername());
-			cli.setPassword(client.getPassword());
+			cli.setUserId(client.getUserId());
+			cli.setEmail(client.getEmail());
+			cli.setFirstName(client.getFirstName());
+			cli.setLastName(client.getLastName());
 			return clientRepository.save(cli);
 		} catch (NullPointerException e) {
 			throw new NotFoundException("Client could not be found");
@@ -45,16 +47,19 @@ public class ClientService {
 		}
 	}
 
-	public Optional<Client> findByName(String name) {
-		return clientRepository.findByNameIgnoreCase(name);
-	}
-
-	public Optional<Client> findByUsername(String username) {
-		return clientRepository.findByUsername(username);
+	public Optional<Client> findByLastName(String lastName) {
+		return clientRepository.findByLastNameOrFirstNameIgnoreCase(lastName);
 	}
 
 	public Optional<Client> findById(String id) {
 		return clientRepository.findById(id);
+	}
+
+	public Client deleteClient(String id) {
+		Optional<Client> client = findById(id);
+		Assert.isTrue(client.isPresent(), "ClientID must be present");
+		clientRepository.deleteById(id);
+		return client.get();
 	}
 
 }

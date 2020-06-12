@@ -11,6 +11,7 @@ import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
 import org.springframework.web.client.RestTemplate;
 
 import com.insignis.product.domain.Product;
@@ -18,6 +19,7 @@ import com.insignis.product.mapper.MapperUtils;
 import com.insignis.product.repository.ProductRepository;
 import com.insignis.shared.dto.ProductDTO;
 import com.insignis.shared.dto.SupplierDTO;
+import com.insignis.shared.exception.InvalidParameterException;
 import com.insignis.shared.exception.NotFoundException;
 import com.insignis.shared.operations.SupplierResource;
 
@@ -75,6 +77,27 @@ public class ProductService implements SupplierResource {
 			productDTO.setSupplier(getSupplierById(product.getSupplierId()).orElse(null));
 		}
 		return productDTO;
+	}
+
+	public Product findProductById(String id) {
+		Assert.isTrue(this.productRepository.existsById(id), "Product does not exist");
+		return productRepository.findById(id).get();
+	}
+
+	public void deleteProduct(String productId) {
+		Assert.isTrue(this.productRepository.existsById(productId), "Product does not exist");
+		this.productRepository.deleteById(productId);
+	}
+
+	public Product updateStock(String id, Integer quantity) throws InvalidParameterException, NotFoundException {
+		Assert.isTrue(this.productRepository.existsById(id), "Product does not exist");
+		Product product = productRepository.findById(id).get();
+		if (product.getStock() < quantity) {
+			throw new InvalidParameterException("Stock is less than quantity you want to purchase");
+		}
+		product.setStock(product.getStock() - quantity);
+		product.setBought(product.getBought() + quantity);
+		return this.save(product);
 	}
 
 }

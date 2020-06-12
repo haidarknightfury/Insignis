@@ -6,3 +6,7 @@ spring:
       password: s3cr3t
   application:
     name: insignis-apigateway
+zuul:
+  routes:
+    supplier-service:
+      service-id: insignis-supplier

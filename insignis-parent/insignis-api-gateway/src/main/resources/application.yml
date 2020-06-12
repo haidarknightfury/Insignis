@@ -1,3 +1,13 @@
 spring:
   application:
     name: insignis-apigateway
+  data:
+    mongodb:
+      database: insignis-db
+      port: 27017
+      uri: mongodb://localhost
+insignis:
+  app:
+    jwtSecret: s3cr3t
+    jwtExpiration: 86400000
+    generateRoles: false

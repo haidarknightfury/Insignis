@@ -49,8 +49,8 @@ public class CartService implements MapNames {
 		this.cartMap.putAll(cartLocalMap);
 	}
 
-	public void deleteCart(Cart cart) {
-		this.cartMap.delete(cart.getId());
+	public void deleteCart(String id) {
+		this.cartMap.delete(id);
 	}
 
 	@SuppressWarnings("unchecked")
