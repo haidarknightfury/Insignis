@@ -13,6 +13,8 @@ public class Payment {
 
 	@Id
 	private String id;
+	private String chargeId;
+	private String balanceTransactionId;
 	private String description;
 	private BigDecimal amount;
 	private PaymentMethod paymentMethod;
@@ -21,8 +23,9 @@ public class Payment {
 	private Currency currency;
 	private Date date;
 
-	public Payment(String description, BigDecimal amount, PaymentMethod paymentMethod, String cartId, String status, Currency currency, Date date) {
-		super();
+	public Payment(String chargeId, String balanceTransactionId, String description, BigDecimal amount, PaymentMethod paymentMethod, String cartId, String status, Currency currency, Date date) {
+		this.chargeId = chargeId;
+		this.balanceTransactionId = balanceTransactionId;
 		this.description = description;
 		this.amount = amount;
 		this.paymentMethod = paymentMethod;
@@ -33,7 +36,6 @@ public class Payment {
 	}
 
 	public Payment() {
-		super();
 	}
 
 	public String getId() {
@@ -66,6 +68,54 @@ public class Payment {
 
 	public void setCartId(String cartId) {
 		this.cartId = cartId;
+	}
+
+	public String getChargeId() {
+		return chargeId;
+	}
+
+	public void setChargeId(String chargeId) {
+		this.chargeId = chargeId;
+	}
+
+	public String getBalanceTransactionId() {
+		return balanceTransactionId;
+	}
+
+	public void setBalanceTransactionId(String balanceTransactionId) {
+		this.balanceTransactionId = balanceTransactionId;
+	}
+
+	public PaymentMethod getPaymentMethod() {
+		return paymentMethod;
+	}
+
+	public void setPaymentMethod(PaymentMethod paymentMethod) {
+		this.paymentMethod = paymentMethod;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public Currency getCurrency() {
+		return currency;
+	}
+
+	public void setCurrency(Currency currency) {
+		this.currency = currency;
+	}
+
+	public Date getDate() {
+		return date;
+	}
+
+	public void setDate(Date date) {
+		this.date = date;
 	}
 
 }

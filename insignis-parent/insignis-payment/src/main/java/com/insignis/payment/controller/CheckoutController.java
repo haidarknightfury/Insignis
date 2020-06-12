@@ -24,13 +24,14 @@ public class CheckoutController {
 	}
 
 	@GetMapping("/checkout/{cartId}")
-	public String checkout(@PathVariable("cartId") String cartId, Model model) {
+	public String checkout(@PathVariable(value = "cartId", required = false) String cartId, Model model) {
 		System.out.println(cartId);
 		CartDTO cartDTO = cartClientService.getCart(cartId);
-		model.addAttribute("amount", cartDTO.getTotal().floatValue() * 100); // in cents
+		model.addAttribute("amount", cartDTO.getTotal().intValue()); // in cents
 		model.addAttribute("stripePublicKey", stripePublicKey);
 		model.addAttribute("products", cartDTO.getProducts());
-		model.addAttribute("currency", ChargeRequest.Currency.MUR);
+		model.addAttribute("currency", ChargeRequest.Currency.EUR);
+		model.addAttribute("cartId", cartId);
 		return "checkout";
 	}
 }

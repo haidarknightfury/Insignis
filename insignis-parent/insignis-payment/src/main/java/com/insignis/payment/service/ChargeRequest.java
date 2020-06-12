@@ -6,19 +6,21 @@ public class ChargeRequest {
 		EUR, USD, MUR;
 	}
 
+	private String cartId;
 	private String description;
 	private int amount; // cents
 	private Currency currency;
 	private String stripeEmail;
 	private String stripeToken;
 
-	public ChargeRequest(String description, int amount, Currency currency, String stripeEmail, String stripeToken) {
+	public ChargeRequest(String description, int amount, Currency currency, String stripeEmail, String stripeToken, String cartId) {
 		super();
 		this.description = description;
 		this.amount = amount;
 		this.currency = currency;
 		this.stripeEmail = stripeEmail;
 		this.stripeToken = stripeToken;
+		this.cartId = cartId;
 	}
 
 	public String getDescription() {
@@ -59,6 +61,20 @@ public class ChargeRequest {
 
 	public void setStripeToken(String stripeToken) {
 		this.stripeToken = stripeToken;
+	}
+
+	public String getCartId() {
+		return cartId;
+	}
+
+	public void setCartId(String cartId) {
+		this.cartId = cartId;
+	}
+
+	@Override
+	public String toString() {
+		return "ChargeRequest [cartId=" + cartId + ", description=" + description + ", amount=" + amount + ", currency=" + currency + ", stripeEmail=" + stripeEmail + ", stripeToken=" + stripeToken
+				+ "]";
 	}
 
 }
