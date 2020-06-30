@@ -29,7 +29,7 @@ public class MapperUtils {
 			productDTO.setSize(product.getSize());
 			productDTO.setColor(product.getColor());
 			productDTO.setBuyingPrice(product.getBuyingPrice());
-			productDTO.setDiscount(product.getBuyingPrice());
+			productDTO.setDiscount(product.getDiscount());
 
 			productDTO.setStock(product.getStock());
 			productDTO.setBought(product.getBought());
@@ -58,7 +58,7 @@ public class MapperUtils {
 			product.setSize(productDto.getSize());
 			product.setColor(productDto.getColor());
 			product.setBuyingPrice(productDto.getBuyingPrice());
-			product.setDiscount(productDto.getBuyingPrice());
+			product.setDiscount(productDto.getDiscount());
 
 			product.setStock(productDto.getStock());
 			product.setBought(productDto.getBought());

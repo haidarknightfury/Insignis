@@ -35,6 +35,7 @@
 		<module>insignis-api-gateway</module>
 		<module>insignis-location</module>
 		<module>insignis-discoveryserver</module>
+		<module>insignis-recommender</module>
 	</modules>
 
 	<dependencies>

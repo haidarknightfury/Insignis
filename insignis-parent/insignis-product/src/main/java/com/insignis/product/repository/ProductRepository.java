@@ -18,6 +18,6 @@ public interface ProductRepository extends MongoRepository<Product, String> {
 
 	public boolean existsById(String productId);
 
-	public List<Product> findByCategories(List<Category> categories);
+	public List<Product> findByCategoriesIn(List<Category> categories);
 
 }

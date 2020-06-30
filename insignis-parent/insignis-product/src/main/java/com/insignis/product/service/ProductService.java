@@ -14,8 +14,10 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 import org.springframework.web.client.RestTemplate;
 
+import com.insignis.product.domain.Category;
 import com.insignis.product.domain.Product;
 import com.insignis.product.mapper.MapperUtils;
+import com.insignis.product.repository.CategoryRepository;
 import com.insignis.product.repository.ProductRepository;
 import com.insignis.shared.dto.ProductDTO;
 import com.insignis.shared.dto.SupplierDTO;
@@ -33,11 +35,13 @@ public class ProductService implements SupplierResource {
 
 	private RestTemplate restTemplate;
 	private ProductRepository productRepository;
+	private CategoryRepository categoryRepository;
 
 	@Autowired
-	public ProductService(RestTemplate restTemplate, ProductRepository productRepository) {
+	public ProductService(RestTemplate restTemplate, ProductRepository productRepository, CategoryRepository categoryRepository) {
 		this.restTemplate = restTemplate;
 		this.productRepository = productRepository;
+		this.categoryRepository = categoryRepository;
 	}
 
 	public List<ProductDTO> getProducts() {
@@ -98,6 +102,11 @@ public class ProductService implements SupplierResource {
 		product.setStock(product.getStock() - quantity);
 		product.setBought(product.getBought() + quantity);
 		return this.save(product);
+	}
+
+	public List<Product> findByCategory(Category category) {
+		Assert.notNull(category.getCategory(), "Category cannot be empty");
+		return this.productRepository.findByCategoriesIn(Arrays.asList(categoryRepository.findByCategory(category.getCategory())));
 	}
 
 }

@@ -2,6 +2,7 @@ package com.insignis.product.controller;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -13,9 +14,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.insignis.product.domain.Category;
 import com.insignis.product.domain.Product;
 import com.insignis.product.mapper.MapperUtils;
 import com.insignis.product.service.ProductService;
+import com.insignis.shared.dto.CategoryDTO;
 import com.insignis.shared.dto.ProductDTO;
 import com.insignis.shared.exception.InvalidParameterException;
 import com.insignis.shared.exception.NotFoundException;
@@ -60,6 +63,14 @@ public class ProductController implements ProductResource {
 	public List<ProductDTO> findAll() {
 		List<ProductDTO> products = productService.getProducts();
 		return products;
+	}
+
+	@ResponseStatus(HttpStatus.OK)
+	@RequestMapping(value = "/findByCategory", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	public List<ProductDTO> findByCategory(@RequestBody CategoryDTO categoryDto) {
+		Category category = MapperUtils.categoryMapper().apply(categoryDto);
+		List<Product> products = productService.findByCategory(category);
+		return products.stream().map(MapperUtils.ProductDTOMapper()).collect(Collectors.toList());
 	}
 
 	@ResponseStatus(HttpStatus.OK)

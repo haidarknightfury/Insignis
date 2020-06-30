@@ -10,3 +10,17 @@ zuul:
   routes:
     supplier-service:
       service-id: insignis-supplier
+    product-service:
+      service-id: insignis-product
+    payment-service:
+      service-id: insignis-payment
+    cart-service:
+      service-id: insignis-cart
+    client-service:
+      service-id: insignis-client
+    location-service:
+      service-id: insignis-location
+    recommender-service:
+      service-id: insignis-recommender
+            
+    

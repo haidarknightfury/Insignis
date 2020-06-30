@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -20,6 +21,8 @@ import com.insignis.location.mapper.ProductLocationDTOMapper;
 import com.insignis.location.model.Location;
 import com.insignis.location.model.Product;
 import com.insignis.location.service.LocationService;
+import com.insignis.location.service.ProductServiceClient;
+import com.insignis.shared.dto.ProductDTO;
 import com.insignis.shared.operations.BaseResources;
 
 @RestController
@@ -28,11 +31,15 @@ public class LocationController implements BaseResources {
 
 	private LocationService locationService;
 	private ProductLocationDTOMapper mapper;
+	private ModelMapper modelMapper;
+	private ProductServiceClient productServiceClient;
 
 	@Autowired
-	public LocationController(LocationService locationService, ProductLocationDTOMapper mapper) {
+	public LocationController(LocationService locationService, ProductLocationDTOMapper mapper, ModelMapper modelMapper, ProductServiceClient productServiceClient) {
 		this.locationService = locationService;
 		this.mapper = mapper;
+		this.modelMapper = modelMapper;
+		this.productServiceClient = productServiceClient;
 	}
 
 	@ResponseStatus(HttpStatus.OK)
@@ -56,9 +63,17 @@ public class LocationController implements BaseResources {
 	public List<ProductLocationDTO> findProductsAtLocation(@RequestParam("location") String location) {
 		Objects.requireNonNull(location, "Location must not be null");
 		Location loc = locationService.findByName(location).get(0);
-		return loc.getProducts().stream().map(mapper.toDto).map(dto -> {
-			dto.setLocationName(location);
-			return dto;
+		return loc.getProducts().stream().map(mapper.toDto).map(productLocDto -> {
+			ProductDTO productDto = productServiceClient.getFullProductDetails(productLocDto.getId());
+			if (productDto != null) {
+				ProductLocationDTO newProdLoc = modelMapper.map(productDto, ProductLocationDTO.class);
+				newProdLoc.setLocationName(location);
+				return newProdLoc;
+			} else {
+				productLocDto.setLocationName(location);
+				return productLocDto;
+			}
+
 		}).collect(Collectors.toList());
 	}
 
@@ -69,6 +84,7 @@ public class LocationController implements BaseResources {
 		Objects.requireNonNull(end, "end location must not be null");
 		List<ProductLocationDTO> productLocations = new ArrayList<ProductLocationDTO>();
 		List<Location> locations = locationService.findShortestPath(start, end);
+		System.out.println("Shortest path is " + locations);
 		locations.stream().forEach(loc -> {
 			productLocations.addAll(findProductsAtLocation(loc.getName()));
 		});

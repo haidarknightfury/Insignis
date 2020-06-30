@@ -69,6 +69,9 @@ public class Product implements Serializable {
 	private String buyerGuarantee;
 	@JsonProperty("sponsored")
 	private List<Object> sponsored = null;
+	@JsonProperty("category")
+	private List<Tab> category;
+
 	@JsonIgnore
 	private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 	private final static long serialVersionUID = -4817961994136831708L;
@@ -385,6 +388,16 @@ public class Product implements Serializable {
 	@JsonAnySetter
 	public void setAdditionalProperty(String name, Object value) {
 		this.additionalProperties.put(name, value);
+	}
+
+	@JsonProperty("category")
+	public List<Tab> getCategory() {
+		return category;
+	}
+
+	@JsonProperty("category")
+	public void setCategory(List<Tab> category) {
+		this.category = category;
 	}
 
 	@Override
